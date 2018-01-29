@@ -11,8 +11,6 @@ import {
     StackNavigator
 } from 'react-navigation';
 
-
-
 import ExistingProjectsScreen from './ExistingProjectsScreen';
 
 class HomeScreen extends Component {
@@ -24,9 +22,9 @@ class HomeScreen extends Component {
         }
     };
 
-    componentDidMount(){
-        // ixo = new IxoModule('https://ixo-node.herokuapp.com');
-    }
+    // componentDidMount(){
+    //     ixo = new IxoModule('https://ixo-node.herokuapp.com');
+    // }
 
     handleButton() {
         Alert.alert("button pressed");
