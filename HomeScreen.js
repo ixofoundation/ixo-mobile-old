@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-// import IxoModule from 'ixo-module';
 import {
     View,
     Button,
-    Text,
     StyleSheet,
     Alert
 } from 'react-native';
@@ -12,6 +10,7 @@ import {
 } from 'react-navigation';
 
 import ExistingProjectsScreen from './ExistingProjectsScreen';
+import ExistingProjectDetailScreen from './ExistingProjectDetailScreen';
 
 class HomeScreen extends Component {
 
@@ -21,10 +20,6 @@ class HomeScreen extends Component {
             alignSelf: 'center',
         }
     };
-
-    // componentDidMount(){
-    //     ixo = new IxoModule('https://ixo-node.herokuapp.com');
-    // }
 
     handleButton() {
         Alert.alert("button pressed");
@@ -55,7 +50,8 @@ const styles = StyleSheet.create({
 
 const App = StackNavigator({
     Home: { screen: HomeScreen },
-    ExistingProjects: { screen: ExistingProjectsScreen }
+    ExistingProjects: { screen: ExistingProjectsScreen },
+    ExistingProjectDetailScreen: { screen: ExistingProjectDetailScreen }
 });
 
 export default App;

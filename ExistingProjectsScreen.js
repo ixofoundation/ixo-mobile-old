@@ -6,6 +6,7 @@ import {
 	TouchableHighlight,
 	FlatList,
 	Text,
+	Alert
 } from 'react-native';
 import ExistingProjectsData from './ExistingProjectsData';
 
@@ -55,7 +56,8 @@ export default class SearchResults extends Component {
 	);
 
 	_onPressItem = (index) => {
-		console.log("Pressed row: " + index);
+		const { navigate } = this.props.navigation;
+		navigate('ExistingProjectDetailScreen', ExistingProjectsData[index])
 	};
 
 	render() {
