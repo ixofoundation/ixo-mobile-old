@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './HomeScreen';
+import App from './App.js';
 
 AppRegistry.registerComponent('IxoMobile', () => App);
