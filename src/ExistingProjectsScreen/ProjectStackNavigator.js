@@ -4,6 +4,6 @@ import ProjectDetailScreen from "./ProjectDetailScreen.js";
 import { StackNavigator } from "react-navigation";
 
 export default (DrawNav = StackNavigator({
-  ProjectListScreen: { screen: ProjectListScreen },
-  ProjectDetailScreen: { screen: ProjectDetailScreen },
+    ProjectListScreen: { screen: ProjectListScreen },
+    ProjectDetailScreen: { screen: ProjectDetailScreen },
 }));

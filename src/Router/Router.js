@@ -5,12 +5,12 @@ import ExistingProjectsScreen from "../ExistingProjectsScreen/index.js";
 import CreateProjectScreen from "../CreateProjectScreen/index.js";
 
 const Router = DrawerNavigator(
-  {
-    ProjectListScreen: { screen: ExistingProjectsScreen },
-    CreateProjectScreen: {screen: CreateProjectScreen }
-  },
-  {
-    contentComponent: props => <SideBar {...props} />
-  }
+    {
+        ExistingProjectsScreen: { screen: ExistingProjectsScreen },
+        CreateProjectScreen: { screen: CreateProjectScreen }
+    },
+    {
+        contentComponent: props => <SideBar {...props} />
+    }
 );
 export default Router;

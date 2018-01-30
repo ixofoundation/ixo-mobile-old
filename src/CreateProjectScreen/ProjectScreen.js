@@ -17,12 +17,12 @@ export default class ProjectScreen extends React.Component {
                         </Button>
                     </Left>
                     <Body>
-                        <Title>HomeScreen</Title>
+                        <Title>Create Project</Title>
                     </Body>
                     <Right />
                 </Header>
                 <Content padder>
-                    <Text>Hello WOrld</Text>
+                    <Text>Hello World</Text>
                 </Content>
             </Container>
         );
