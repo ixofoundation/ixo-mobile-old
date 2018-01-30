@@ -1,4 +1,4 @@
 import { AppRegistry } from 'react-native';
-import App from './App.js';
+import Router from './testapp/Router';
 
-AppRegistry.registerComponent('IxoMobile', () => App);
+AppRegistry.registerComponent('IxoMobile', () => Router);
