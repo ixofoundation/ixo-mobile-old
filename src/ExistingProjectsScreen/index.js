@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import HomeScreen from "./HomeScreen.js";
-import MainScreenNavigator from "../ChatScreen/index.js";
-import Profile from "../ProfileScreen/index.js";
+import ProjectListScreen from "./ProjectListScreen.js";
 import SideBar from "../SideBar/SideBar.js";
 import { DrawerNavigator } from "react-navigation";
+import ProjectStackNavigator from "./ProjectStackNavigator.js";
 const HomeScreenRouter = DrawerNavigator(
   {
-    Home: { screen: HomeScreen },
-    Chat: { screen: MainScreenNavigator },
-    Profile: { screen: Profile }
+    ProjectListScreen: { screen: ProjectStackNavigator },
   },
   {
     contentComponent: props => <SideBar {...props} />
