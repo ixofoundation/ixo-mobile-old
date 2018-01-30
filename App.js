@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import HomeScreen from "./src/ExistingProjectsScreen/index.js";
+import Router from "./src/Router/Router.js";
 export default class AwesomeApp extends Component {
   render() {
-    return <HomeScreen />;
+    return <Router />;
   }
 }
