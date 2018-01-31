@@ -16,7 +16,6 @@ export default class DetailScreen extends React.Component {
 
     _onSubmit() {
         Alert.alert("This submit worked");
-
     }
 
     _onValueChange = (formState, fieldName, value) => {
