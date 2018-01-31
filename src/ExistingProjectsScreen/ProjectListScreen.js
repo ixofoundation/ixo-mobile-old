@@ -20,14 +20,18 @@ export default class HomeScreen extends React.Component {
     }
 
     _flattenData = (data, accum, flatData) => {
-        for (key in data) {
-            accum.push(key);
-            if (data[key] !== null && typeof data[key] === "object") {
-                this._flattenData(data[key], accum, flatData);
+        let keys = Object.keys(data);
+        for (let i = 0; i < keys.length; i++) {
+            accum.push(keys[i]);
+            if (data[keys[i]] !== null && typeof data[keys[i]] === "object") {
+                this._flattenData(data[keys[i]], accum, flatData);
             } else {
                 let flatString = accum.join(".");
+                accum.pop();
+                flatData[flatString] = data[keys[i]];
+            }
+            if (i == keys.length - 1) {
                 accum.pop()
-                flatData[flatString] = data[key];
             }
         }
         return flatData
