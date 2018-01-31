@@ -1,62 +1,48 @@
 import React from "react";
-import { Image } from 'react-native';
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, View } from "native-base";
+import { Image, StyleSheet, Button, View, Text, Alert } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import { Ixo } from 'ixo-module';
 export default class ProjectDetailScreen extends React.Component {
+    state = { pingResult: "Waiting..." };
 
-    static navigationOptions = {
-        header: null
-    }
+    // pingIxoServerNode = () => {
+    //     var ixo = new Ixo('https://ixo-node.herokuapp.com');
+    //     ixo.network.pingIxoServerNode().then((response) => {
+    //         this.setState({ pingResult: JSON.stringify(response) });
+    //     })
+    // }
 
-    _renderImage() {
-        return (
-            <View style={{ flex: 1, flexDirection: "row" }}>
-                <Image source={{ uri: 'https://cdn.xl.thumbs.canstockphoto.com/example-blue-square-stamp-isolated-on-white-background-clip-art_csp23367728.jpg' }}
-                    style={{ height: 200, flex: 1 }} resizeMode='cover' />
-            </View>
-        );
-    }
-
-    _renderText = () => {
-        const { state } = this.props.navigation;
-        let projectData = state.params;
-        let textViews = Object.keys(projectData).map((key, index) => {
-            let legibleKey = (key.charAt(0).toUpperCase() + key.slice(1)).replace(".", " ");
-            return (
-                <View padder style={{ flex: 1, flexDirection: "row" }}
-                    key={index}>
-                    <Text style={{ fontWeight: "bold", flex: 1 }}>{legibleKey}</Text>
-                    <Text style={{ flex: 3 }}>{projectData[key]}</Text>
-                </View>
-            );
-        });
-
-        return (
-            <View>{textViews}</View>
-        );
+    _onPress() {
+        Alert.alert('on Press!');
     }
 
     render() {
-        const { state } = this.props.navigation;
-        let projectData = state.params;
         return (
-            <Container>
-                <Header>
-                    <Left>
-                        <Button transparent onPress={() => this.props.navigation.goBack()}>
-                            <Icon name="arrow-back" />
-                        </Button>
-                    </Left>
-                    <Body>
-                        <Title>{projectData.name}</Title>
-                    </Body>
-                    <Right />
-                </Header>
-                <Content>
-                    {this._renderImage()}
-                    {this._renderText()}
-                </Content>
-            </Container>
+            <View style={styles.container}>
+                <Text>{this.state.pingResult}</Text>
+                <Button onPress={this._onPress} title="Hello" color="#2E9298" accessibilityLabel="Tap on Me" />
+            </View>
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#FFFFFF'
+    },
+    buttonContainer: {
+        backgroundColor: '#2E9298',
+        borderRadius: 10,
+        padding: 10,
+        shadowColor: '#000000',
+        shadowOffset: {
+            width: 0,
+            height: 3
+        },
+        shadowRadius: 10,
+        shadowOpacity: 0.25
+    }
+})
