@@ -36,7 +36,26 @@ const data =
                 "name": "template.name",
                 "type": "text",
                 "hidden": "true"
-            }
+            },
+            {
+                "label": "Role",
+                "name": "role",
+                "type": "select",
+                "options": [
+                    {
+                        "label": "Investment Agent",
+                        "value": "IA"
+                    },
+                    {
+                        "label": "Service Agent",
+                        "value": "SA"
+                    },
+                    {
+                        "label": "Evaluation Agent",
+                        "value": "EA"
+                    }
+                ]
+            },
         ]
     }
 

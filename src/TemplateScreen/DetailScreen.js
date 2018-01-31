@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from 'react-native';
+import { Image, Alert } from 'react-native';
 import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, View, Form, Item, Label, Input, Picker } from "native-base";
 import { StackNavigator } from 'react-navigation';
 
@@ -14,6 +14,11 @@ export default class DetailScreen extends React.Component {
 
     state = {}
 
+    _onSubmit() {
+        Alert.alert("This submit worked");
+
+    }
+
     _onValueChange = (formState, fieldName, value) => {
         formState[fieldName] = value;
         this.setState(formState);
@@ -27,45 +32,63 @@ export default class DetailScreen extends React.Component {
             if (!(fieldName in formState)) {
                 formState[fieldName] = "";
             }
-            switch (field.type) {
-                case "country":
-                    return (
-                        <Picker
-                            iosHeader="Select one"
-                            mode="dropdown"
-                            key={index}
-                            selectedValue={this.state[fieldName]}
-                            onValueChange={(country) => this._onValueChange(formState, fieldName, country)}
-                        >
-                            {countries.map((country, index) => {
-                                return <Item label={country} value={country} key={index} />
-                            })}
+            if (field.hidden !== "true") {
+                switch (field.type) {
+                    case "country":
+                        return (
+                            <Picker
+                                iosHeader="Select one"
+                                mode="dropdown"
+                                key={index}
+                                selectedValue={this.state[fieldName]}
+                                onValueChange={(country) => this._onValueChange(formState, fieldName, country)}
+                            >
+                                {countries.map((country, index) => {
+                                    return <Item label={country} value={country} key={index} />
+                                })}
 
-                        </Picker>
-                    );
-                case "textarea":
-                    return (
-                        <Item regular
-                            key={index}>
-                            <Input multiline={true}
-                                style={{ textAlignVertical: "top" }}
-                                numberOfLines={4}
-                                placeholder={field.label}
-                                onChangeText={(text) => this._onValueChange(formState, fieldName, text)}
-                            />
-                        </Item>
-                    );
-                case "text":
-                    return (
-                        <Item
-                            key={index}>
-                            <Input placeholder={field.label}
-                                onChangeText={(text) => this._onValueChange(formState, fieldName, text)}
-                            />
-                        </Item>
-                    );
-                default:
-                    return null;
+                            </Picker>
+                        );
+                    case "textarea":
+                        return (
+                            <Item regular
+                                key={index}>
+                                <Input multiline={true}
+                                    style={{ textAlignVertical: "top" }}
+                                    numberOfLines={4}
+                                    placeholder={field.label}
+                                    onChangeText={(text) => this._onValueChange(formState, fieldName, text)}
+                                />
+                            </Item>
+                        );
+                    case "text":
+                        return (
+                            <Item
+                                key={index}>
+                                <Input placeholder={field.label}
+                                    onChangeText={(text) => this._onValueChange(formState, fieldName, text)}
+                                />
+                            </Item>
+                        );
+                    case "select":
+                        let options = field.options;
+                        return (
+                            <Picker
+                                iosHeader="Select one"
+                                mode="dropdown"
+                                key={index}
+                                selectedValue={this.state[fieldName]}
+                                onValueChange={(value) => this._onValueChange(formState, fieldName, value)}
+                            >
+                                {options.map((option, index) => {
+                                    return <Item label={option.label} value={option.value} key={index} />
+                                })}
+
+                            </Picker>
+                        );
+                    default:
+                        return null;
+                }
             }
         });
         return formFields;
@@ -88,8 +111,13 @@ export default class DetailScreen extends React.Component {
                     </Body>
                     <Right />
                 </Header>
-                <Content>
-                    {this._generateTemplate()}
+                <Content padder>
+                    <View>
+                        {this._generateTemplate()}
+                    </View>
+                        <Button block onPress={() => this._onSubmit()}>
+                            <Text>Submit</Text>
+                        </Button>
                 </Content>
             </Container>
         );
