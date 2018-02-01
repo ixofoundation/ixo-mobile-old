@@ -14,8 +14,51 @@ export default class DetailScreen extends React.Component {
 
     state = {}
 
-    _onSubmit() {
-        Alert.alert("This submit worked");
+    componentWillMount() {
+        let newState = Object.assign(this.state);
+        let fields = CreateProjectData.fields;
+        fields.map((field, index) => {
+            let fieldName = field.name;
+            switch(field.type) {
+                case "country":
+                    let firstCountry = countries[0];
+                    newState[fieldName] = firstCountry;
+                    break;
+                case "select":
+                    let firstValue = field.options[0].value;
+                    newState[fieldName] = firstValue;
+                    break;
+                default:
+                    break;
+
+            }
+            this.setState(newState);
+        });
+    }
+
+    _flattenObject(state) {
+        let obj = {}
+        let temp = obj;
+        let keys = Object.keys(state);
+        for (let i = 0; i < keys.length; i++) {
+            let arr = keys[i].split('.');
+            let val = state[keys[i]];
+            for (let j = 0; j < arr.length; j++) {
+                if (j == arr.length - 1) {
+                    obj[arr[j]] = val
+                } else if (obj[arr[j]] === undefined) {
+                    obj[arr[j]] = {};
+                }
+                obj = obj[arr[j]];
+            }
+            obj = temp;
+        }
+        return obj;
+    }
+
+    _onSubmit = () => {
+        let flattenedState = this._flattenObject(this.state);
+        console.log(flattenedState);
     }
 
     _onValueChange = (formState, fieldName, value) => {
@@ -82,7 +125,6 @@ export default class DetailScreen extends React.Component {
                                 {options.map((option, index) => {
                                     return <Item label={option.label} value={option.value} key={index} />
                                 })}
-
                             </Picker>
                         );
                     default:
@@ -114,9 +156,9 @@ export default class DetailScreen extends React.Component {
                     <View>
                         {this._generateTemplate()}
                     </View>
-                        <Button block onPress={() => this._onSubmit()}>
-                            <Text>Submit</Text>
-                        </Button>
+                    <Button block onPress={() => this._onSubmit()}>
+                        <Text>Submit</Text>
+                    </Button>
                 </Content>
             </Container>
         );
