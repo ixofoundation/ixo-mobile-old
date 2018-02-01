@@ -5,6 +5,7 @@ import {
     List, ListItem, Thumbnail, View, Item, Input
 } from "native-base";
 import ExistingProjectsData from '../Data/ExistingProjectsData.js';
+import { Ixo } from 'ixo-module';
 
 
 var templateList = [{ name: 'Fake Name 0', type: 'Project 0' }, { name: 'Fake Name 0', type: 'Project 0' }, { name: 'Fake Name 0', type: 'Project 0' },
@@ -16,6 +17,31 @@ export default class ListScreen extends React.Component {
 
     static navigationOptions = {
         header: null
+    }
+
+    constructor(props) {
+        super(props);
+        let hostName = 'https://ixo-node.herokuapp.com';
+        this.ixo = new Ixo(hostName);
+    }
+
+    _searchButtonPressed = (templateName) => {
+        this.ixo.project.getProjectTemplate(templateName)
+            .then((response) => {
+                console.log(response.result);
+                this.setState(
+                    {
+                        flatData: flatData,
+                        isLoading: false
+                    }
+                );
+            })
+            .catch(error => console.log(error));
+
+    }
+
+    componentDidMount() {
+
     }
 
     _renderRow = (item, _, index) => {
@@ -47,11 +73,13 @@ export default class ListScreen extends React.Component {
                         </Button>
                     </View>
                     <Item>
-                        <Icon name="ios-search" />
-                        <Input placeholder="Search" />
-                        <Icon name="ios-people" />
+                        <Icon name="search" />
+                        <Input placeholder="Search"
+                            onChangeText={(text) => console.log(text)} />
+                        <Icon name="paper" />
                     </Item>
-                    <Button transparent>
+                    <Button transparent
+                        onPress={() => this._searchButtonPressed()}>
                         <Text>Search</Text>
                     </Button>
                 </Header>

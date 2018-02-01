@@ -39,6 +39,10 @@ export default class HomeScreen extends React.Component {
             .catch(error => console.log(error));
     }
 
+    _searchButtonPressed() {
+        
+    }
+
     _flattenData = (data, accum, flatData) => {
         let keys = Object.keys(data);
         for (let i = 0; i < keys.length; i++) {
@@ -94,11 +98,13 @@ export default class HomeScreen extends React.Component {
                         </Button>
                     </View>
                     <Item>
-                        <Icon name="ios-search" />
-                        <Input placeholder="Search" />
-                        <Icon name="ios-people" />
+                        <Icon name="search" />
+                        <Input placeholder="Search"
+                            onChangeText={(text) => console.log(text)} />
+                        <Icon name="paper" />
                     </Item>
-                    <Button transparent>
+                    <Button transparent
+                        onPress={() => this._searchButtonPressed()}>
                         <Text>Search</Text>
                     </Button>
                 </Header>
