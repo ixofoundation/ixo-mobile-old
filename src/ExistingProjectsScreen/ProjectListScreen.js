@@ -2,9 +2,9 @@ import React from "react";
 import { StatusBar } from "react-native";
 import {
     Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, Card, CardItem,
-    List, ListItem, Thumbnail
+    List, ListItem, Thumbnail, Spinner
 } from "native-base";
-import ExistingProjectsData from '../Data/ExistingProjectsData.js';
+import { Ixo } from 'ixo-module';
 
 export default class HomeScreen extends React.Component {
 
@@ -14,9 +14,29 @@ export default class HomeScreen extends React.Component {
 
     constructor(props) {
         super(props);
-        this.flatData = ExistingProjectsData.map((value, index) => {
-            return this._flattenData(value, [], {});
-        })
+        this.state = {
+            flatData: [],
+            isLoading: true
+        };
+        let hostName = 'https://ixo-node.herokuapp.com';
+        this.ixo = new Ixo(hostName);
+    }
+
+    componentDidMount() {
+        this.ixo.project.listProjects()
+            .then((response) => {
+                console.log(response.result);
+                let flatData = response.result.map((value, index) => {
+                    return this._flattenData(value, [], {});
+                })
+                this.setState(
+                    {
+                        flatData: flatData,
+                        isLoading: false
+                    }
+                );
+            })
+            .catch(error => console.log(error));
     }
 
     _flattenData = (data, accum, flatData) => {
@@ -42,14 +62,22 @@ export default class HomeScreen extends React.Component {
             <ListItem
                 item={item}
                 index={index}
-                onPress={() => this.props.navigation.navigate("ProjectDetailScreen", this.flatData[index])}>
-                <Thumbnail square size={80} source={{ uri: 'https://cdn.xl.thumbs.canstockphoto.com/example-blue-square-stamp-isolated-on-white-background-clip-art_csp23367728.jpg' }} />
+                onPress={() => this.props.navigation.navigate("ProjectDetailScreen", this.state.flatData[index])}>
+                <Thumbnail square size={80} source={{ uri: 'http://www.theanimalfiles.com/images/sand_cat_1.jpg' }} />
                 <Body>
-                    <Text>{this.flatData[index]['name']}</Text>
-                    <Text note>{this.flatData[index]['country']} | {this.flatData[index]['owner.name']}</Text>
+                    <Text>{this.state.flatData[index]['name']}</Text>
+                    <Text note>{this.state.flatData[index]['country']} | {this.state.flatData[index]['owner.name']}</Text>
                 </Body>
             </ListItem>
         );
+    }
+
+    _generateContent() {
+        if (this.state.isLoading) {
+            return <Content contentContainerStyle={{flex: 1, justifyContent: "center"}}><Spinner color="blue"/></Content>
+        } else {
+            return <List dataArray={this.state.flatData} renderRow={this._renderRow}></List>
+        }
     }
 
     render() {
@@ -63,16 +91,12 @@ export default class HomeScreen extends React.Component {
                             <Icon name="menu" />
                         </Button>
                     </Left>
-                    <Body>
+                    <Body style={{flex: 3}}>
                         <Title>Existing Projects</Title>
                     </Body>
                     <Right />
                 </Header>
-                <Content padder>
-                    <List dataArray={this.flatData}
-                        renderRow={this._renderRow}>
-                    </List>
-                </Content>
+                {this._generateContent()}
             </Container>
         );
     }

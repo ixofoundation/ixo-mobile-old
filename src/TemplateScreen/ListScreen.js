@@ -44,7 +44,7 @@ export default class ListScreen extends React.Component {
                             <Icon name="menu" />
                         </Button>
                     </Left>
-                    <Body>
+                    <Body style={{flex: 3}}>
                         <Title>Templates</Title>
                     </Body>
                     <Right />

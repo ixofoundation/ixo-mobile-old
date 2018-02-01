@@ -147,7 +147,7 @@ export default class DetailScreen extends React.Component {
                             <Icon name="arrow-back" />
                         </Button>
                     </Left>
-                    <Body>
+                    <Body style={{flex: 3}}>
                         <Title>{projectData.name}</Title>
                     </Body>
                     <Right />

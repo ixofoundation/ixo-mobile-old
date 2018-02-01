@@ -11,7 +11,7 @@ export default class ProjectDetailScreen extends React.Component {
     _renderImage() {
         return (
             <View style={{ flex: 1, flexDirection: "row" }}>
-                <Image source={{ uri: 'https://cdn.xl.thumbs.canstockphoto.com/example-blue-square-stamp-isolated-on-white-background-clip-art_csp23367728.jpg' }}
+                <Image source={{ uri: 'http://www.theanimalfiles.com/images/sand_cat_1.jpg' }}
                     style={{ height: 200, flex: 1 }} resizeMode='cover' />
             </View>
         );
@@ -47,7 +47,7 @@ export default class ProjectDetailScreen extends React.Component {
                             <Icon name="arrow-back" />
                         </Button>
                     </Left>
-                    <Body>
+                    <Body style={{flex: 3}}>
                         <Title>{projectData.name}</Title>
                     </Body>
                     <Right />
