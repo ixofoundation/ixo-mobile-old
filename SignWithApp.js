@@ -7,8 +7,7 @@ requestCode = 0;
 
 async function signWithApp(form) {
   if (Platform.OS === 'ios') {
-    console.warn('iOS is not supported.');
-    return null;
+    throw new Error('iOS is not supported.');
   }
 
   const { StartActivity } = NativeModules;
@@ -16,8 +15,7 @@ async function signWithApp(form) {
   const componentName = await StartActivity.resolveActivity(action);
   if (!componentName) {
     // TODO: send link to app store?
-    console.warn("Cannot resolve signing activity. Did you install the signing app?");
-    return null;
+    throw new Error("Cannot resolve signing activity. Did you install the signing app?");
   }
 
   const response = await StartActivity.startActivityForResult(
@@ -32,4 +30,4 @@ async function signWithApp(form) {
   return response.data.content;
 };
 
-export default sign;
+export default signWithApp;
