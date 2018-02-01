@@ -2,7 +2,7 @@ import React from "react";
 import { StatusBar } from "react-native";
 import {
     Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, Card, CardItem,
-    List, ListItem, Thumbnail, Spinner
+    List, ListItem, Thumbnail, Spinner, Input, View, Item
 } from "native-base";
 import { Ixo } from 'ixo-module';
 
@@ -74,7 +74,7 @@ export default class HomeScreen extends React.Component {
 
     _generateContent() {
         if (this.state.isLoading) {
-            return <Content contentContainerStyle={{flex: 1, justifyContent: "center"}}><Spinner color="blue"/></Content>
+            return <Content contentContainerStyle={{ flex: 1, justifyContent: "center" }}><Spinner color="blue" /></Content>
         } else {
             return <List dataArray={this.state.flatData} renderRow={this._renderRow}></List>
         }
@@ -83,18 +83,24 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <Container>
-                <Header>
-                    <Left>
+                <Header searchBar rounded>
+                    <View style={{ flex: 0, justifyContent: "space-around" }}>
                         <Button
                             transparent
                             onPress={() => this.props.navigation.navigate("DrawerOpen")}>
-                            <Icon name="menu" />
+                            <Icon
+                                style={{ marginLeft: 5 }}
+                                name="menu" />
                         </Button>
-                    </Left>
-                    <Body style={{flex: 3}}>
-                        <Title>Existing Projects</Title>
-                    </Body>
-                    <Right />
+                    </View>
+                    <Item>
+                        <Icon name="ios-search" />
+                        <Input placeholder="Search" />
+                        <Icon name="ios-people" />
+                    </Item>
+                    <Button transparent>
+                        <Text>Search</Text>
+                    </Button>
                 </Header>
                 {this._generateContent()}
             </Container>

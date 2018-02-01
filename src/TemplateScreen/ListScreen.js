@@ -2,7 +2,7 @@ import React from "react";
 import { StatusBar } from "react-native";
 import {
     Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, Card, CardItem,
-    List, ListItem, Thumbnail, View
+    List, ListItem, Thumbnail, View, Item, Input
 } from "native-base";
 import ExistingProjectsData from '../Data/ExistingProjectsData.js';
 
@@ -36,18 +36,24 @@ export default class ListScreen extends React.Component {
     render() {
         return (
             <Container>
-                <Header>
-                    <Left>
+                <Header searchBar rounded>
+                    <View style={{ flex: 0, justifyContent: "space-around" }}>
                         <Button
                             transparent
                             onPress={() => this.props.navigation.navigate("DrawerOpen")}>
-                            <Icon name="menu" />
+                            <Icon
+                                style={{ marginLeft: 5 }}
+                                name="menu" />
                         </Button>
-                    </Left>
-                    <Body style={{flex: 3}}>
-                        <Title>Templates</Title>
-                    </Body>
-                    <Right />
+                    </View>
+                    <Item>
+                        <Icon name="ios-search" />
+                        <Input placeholder="Search" />
+                        <Icon name="ios-people" />
+                    </Item>
+                    <Button transparent>
+                        <Text>Search</Text>
+                    </Button>
                 </Header>
                 <Content padder>
                     <List dataArray={templateList}
