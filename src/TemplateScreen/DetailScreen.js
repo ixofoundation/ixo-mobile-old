@@ -4,6 +4,8 @@ import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Tex
 import { StackNavigator } from 'react-navigation';
 
 import CreateProjectData from '../Data/CreateProjectData.js';
+import signWithApp from '../../SignWithApp.js';
+
 var countries = ["South Africa", "USA", "China"]
 
 export default class DetailScreen extends React.Component {
@@ -58,7 +60,8 @@ export default class DetailScreen extends React.Component {
 
     _onSubmit = () => {
         let flattenedState = this._flattenObject(this.state);
-        console.log(flattenedState);
+        let signedData = signWithApp(JSON.stringify(flattenedState));
+        console.log(signedData);
     }
 
     _onValueChange = (formState, fieldName, value) => {
