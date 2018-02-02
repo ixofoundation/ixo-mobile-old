@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, AsyncStorage } from "react-native";
 import {
     Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, Card, CardItem,
     List, ListItem, Thumbnail, View, Item, Input
@@ -8,9 +8,9 @@ import ExistingProjectsData from '../Data/ExistingProjectsData.js';
 import { Ixo } from 'ixo-module';
 
 
-var templateList = [{ name: 'Fake Name 0', type: 'Project 0' }, { name: 'Fake Name 0', type: 'Project 0' }, { name: 'Fake Name 0', type: 'Project 0' },
+var templateList = [{ name: 'Fake Name 0', type: 'Project 0' }, { name: 'Fake Name 1', type: 'Project 0' }, { name: 'Fake Name 2', type: 'Project 0' },
 { name: 'Fake Name 1', type: 'Project 1' }, { name: 'Fake Name 1', type: 'Project 1' },
-{ name: 'Fake Name 2', type: 'Project 2' }, { name: 'Fake Name 2', type: 'Project 2' }, { name: 'Fake Name 2', type: 'Project 2' }
+{ name: 'Fake Name 0', type: 'Project 2' }, { name: 'Fake Name 2', type: 'Project 2' }, { name: 'Fake Name 1', type: 'Project 2' }
 ]
 
 export default class ListScreen extends React.Component {
@@ -23,27 +23,65 @@ export default class ListScreen extends React.Component {
         super(props);
         let hostName = 'https://ixo-node.herokuapp.com';
         this.ixo = new Ixo(hostName);
+
+        this.state = {
+            originalData: templateList,
+            filteredData: [],
+            searchText: ""
+        };
+    }
+
+    _onSearchFilter = (text) => {
+        console.log("_onSearchFilter called");
+        let prevData = this.state.originalData;
+        let searchText = text.toLowerCase().trim();
+        let filteredData = prevData.filter((value, index) => prevData[index]["name"].toLowerCase().includes(searchText));
+        console.log("filteredData", filteredData);
+        this.setState({ filteredData, searchText: text });
+    }
+
+    componentDidMount() {
+        console.log("component did mount called")
+        let key = "key";
+        this._storeTemplatesLocally(key)
+            .then(() => this._getLocalTemplates(key));
     }
 
     _searchButtonPressed = (templateName) => {
-        // this.ixo.project.getProjectTemplate(templateName)
-        //     .then((response) => {
-        //         console.log(response.result);
-        //         this.setState(
-        //             {
-        //                 flatData: flatData,
-        //                 isLoading: false
-        //             }
-        //         );
-        //     })
-        //     .catch(error => console.log(error));
+        // TODO: get project template from ixo-module
+        // if there is internet and the call succeeded, display it and store it locally (synchronize local and remote template copies)
+        // else display templates from local storage
+    }
+
+    async _storeTemplatesLocally(key) {
+        let data = this.state.searchText.length > 0 ? this.state.filteredData : this.state.originalData;
+        try {
+            await AsyncStorage.setItem(key, JSON.stringify(data));
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    async _getLocalTemplates(key) {
+        try {
+            const value = await AsyncStorage.getItem(key);
+            if (value !== null) {
+                // We have data!!
+                console.log(JSON.parse(value));
+                // console.log(value);
+            }
+        } catch (error) {
+            // Error retrieving data
+            console.log(error);
+        }
 
     }
 
     _renderRow = (item, _, index) => {
+        let data = this.state.searchText.length > 0 ? this.state.filteredData : this.state.originalData;
         return (
             <View>
-                {((index == 0) || (item.type !== templateList[index - 1].type)) &&
+                {((index == 0) || (item.type !== data[index - 1].type)) &&
                     <ListItem itemDivider>
                         <Text>{item.type}</Text>
                     </ListItem>
@@ -56,6 +94,7 @@ export default class ListScreen extends React.Component {
     }
 
     render() {
+        let data = this.state.searchText.length > 0 ? this.state.filteredData : this.state.originalData;
         return (
             <Container>
                 <Header searchBar rounded>
@@ -71,16 +110,13 @@ export default class ListScreen extends React.Component {
                     <Item>
                         <Icon name="search" />
                         <Input placeholder="Search"
-                            onChangeText={(text) => console.log(text)} />
+                            onChangeText={(text) => this._onSearchFilter(text)}
+                            value={this.state.searchText} />
                         <Icon name="paper" />
                     </Item>
-                    <Button transparent
-                        onPress={() => this._searchButtonPressed()}>
-                        <Text>Search</Text>
-                    </Button>
                 </Header>
                 <Content padder>
-                    <List dataArray={templateList}
+                    <List dataArray={data}
                         renderRow={this._renderRow}>
                     </List>
                 </Content>
