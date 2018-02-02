@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, Alert } from 'react-native';
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, View, Form, Item, Label, Input, Picker } from "native-base";
+import { Container, Header, Title, Left, Icon, Right, Button, Body, 
+    Content, Text, View, Form, Item, Label, Input, Picker, Spinner } from "native-base";
 import { StackNavigator } from 'react-navigation';
 
 import CreateProjectData from '../Data/CreateProjectData.js';
@@ -17,7 +18,8 @@ export default class DetailScreen extends React.Component {
     state = {
         latitude: null,
         longitude: null,
-        templateData: {}
+        templateData: {},
+        submitStatus : null
     };
 
     _getLocation() {
@@ -95,10 +97,12 @@ export default class DetailScreen extends React.Component {
     }
 
     _onSubmit = () => {
+        this.setState({submitStatus: 'submitting'});
         let jsonifiedData = this._jsonifyFlatData(this.state.templateData);
         console.log(jsonifiedData);
         signWithApp(JSON.stringify(jsonifiedData))
           .then( signedData => {
+            this.setState({submitStatus: 'submitted'});
             console.log('signedData: %s', JSON.stringify(signedData));
           })
           .catch (error => {
@@ -202,9 +206,15 @@ export default class DetailScreen extends React.Component {
                     <View>
                         {this._generateTemplate()}
                     </View>
+                    {this.state.submitStatus === 'submitting' && <Spinner color="blue" />}
+                    {this.state.submitStatus === 'submitted' ?
+                    <Button block disabled={true}>
+                        <Text>Your submission was successful :)</Text>
+                    </Button> :
                     <Button block onPress={() => this._onSubmit()}>
                         <Text>Submit</Text>
                     </Button>
+                    }
                 </Content>
             </Container>
         );
