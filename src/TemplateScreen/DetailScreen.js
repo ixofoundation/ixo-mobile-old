@@ -14,7 +14,27 @@ export default class DetailScreen extends React.Component {
         header: null
     }
 
-    state = {}
+    state = {
+        latitude: null,
+        longitude: null
+      };
+
+    componentDidMount() {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            this.setState({
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            });
+            console.log("this is the position: ", position);
+          },
+          (error) => {
+              this.setState({ error: error.message });
+              console.log(error);
+            },
+          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+      }
 
     componentWillMount() {
         let newState = Object.assign(this.state);
@@ -60,8 +80,9 @@ export default class DetailScreen extends React.Component {
 
     _onSubmit = () => {
         let flattenedState = this._flattenObject(this.state);
-        let signedData = signWithApp(JSON.stringify(flattenedState));
-        console.log(signedData);
+        console.log(flattenedState);
+        // let signedData = signWithApp(JSON.stringify(flattenedState));
+        // console.log(signedData);
     }
 
     _onValueChange = (formState, fieldName, value) => {
