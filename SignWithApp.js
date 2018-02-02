@@ -16,7 +16,7 @@ function getIxo(){
 }
 
 
-async function signWithApp(form) {
+async function signWithApp(formAsString) {
   if (Platform.OS === 'ios') {
     throw new Error('iOS is not supported.');
   }
@@ -29,6 +29,7 @@ async function signWithApp(form) {
     throw new Error("Cannot resolve signing activity. Did you install the signing app?");
   }
 
+  const form = JSON.parse(formAsString);
   const response = await StartActivity.startActivityForResult(
     ++requestCode,
     action,
@@ -46,19 +47,10 @@ async function signWithApp(form) {
   var signature = response.data.signature.signature; 
   var data = response.data.content;
   var signedDate = response.data.signature.created;
+  var signatureType = response.data.signature.type;
 
   console.log("Sign response:" + JSON.stringify(response.data.signature));
-  return ixo.project.createProject(did, signature, data, signedDate);
-  //   .then( project => {
-  //     console.log('got a project');
-  //     console.log("Create Project:" + JSON.stringify(newProject))
-  //     return Promise.resolve(project);
-  //   })
-  //   .catch( error => {
-  //     return Promise.reject('create project failed');
-  //   });
-  // // return response.data;//newProject;
-
+  return ixo.project.createProject(did, signature, data, signedDate, signatureType);
   
 };
 
