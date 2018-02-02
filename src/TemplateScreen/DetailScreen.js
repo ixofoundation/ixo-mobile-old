@@ -16,32 +16,48 @@ export default class DetailScreen extends React.Component {
 
     state = {
         latitude: null,
-        longitude: null
-      };
+        longitude: null,
+        templateData: {}
+    };
+
+    _getLocation() {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.setState({
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                });
+                console.log("this is the position: ", position);
+            },
+            (error) => {
+                console.log(error);
+            },
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
+        );
+    }
+
+    _setHiddenFields = () => {
+        let fields = CreateProjectData.fields;
+        let formState = this.state.templateData;
+        for (field of fields) {
+            if (field.hidden == "true") {
+                let fieldName = field.name;
+                this._updateFormData(formState, fieldName, "default");
+            }
+        }
+    }
 
     componentDidMount() {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            this.setState({
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude,
-            });
-            console.log("this is the position: ", position);
-          },
-          (error) => {
-              this.setState({ error: error.message });
-              console.log(error);
-            },
-          { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 },
-        );
-      }
+        // this._getLocation();
+        this._setHiddenFields();
+    }
 
     componentWillMount() {
-        let newState = Object.assign(this.state);
+        let newState = Object.assign(this.state.templateData);
         let fields = CreateProjectData.fields;
         fields.map((field, index) => {
             let fieldName = field.name;
-            switch(field.type) {
+            switch (field.type) {
                 case "country":
                     let firstCountry = countries[0];
                     newState[fieldName] = firstCountry;
@@ -54,11 +70,11 @@ export default class DetailScreen extends React.Component {
                     break;
 
             }
-            this.setState(newState);
+            this.setState({ templateData: newState });
         });
     }
 
-    _flattenObject(state) {
+    _jsonifyFlatData(state) {
         let obj = {}
         let temp = obj;
         let keys = Object.keys(state);
@@ -79,20 +95,21 @@ export default class DetailScreen extends React.Component {
     }
 
     _onSubmit = () => {
-        let flattenedState = this._flattenObject(this.state);
-        console.log(flattenedState);
+        let jsonifiedData = this._jsonifyFlatData(this.state.templateData);
+        console.log("unflattened: ", jsonifiedData);
+        console.log("flattened: ", this.state.templateData);
         // let signedData = signWithApp(JSON.stringify(flattenedState));
         // console.log(signedData);
     }
 
-    _onValueChange = (formState, fieldName, value) => {
+    _updateFormData = (formState, fieldName, value) => {
         formState[fieldName] = value;
-        this.setState(formState);
+        this.setState({ templateData: formState });
     }
 
     _generateTemplate() {
         let fields = CreateProjectData.fields;
-        let formState = this.state;
+        let formState = this.state.templateData;
         let formFields = fields.map((field, index) => {
             let fieldName = field.name;
             if (!(fieldName in formState)) {
@@ -106,8 +123,8 @@ export default class DetailScreen extends React.Component {
                                 iosHeader="Select one"
                                 mode="dropdown"
                                 key={index}
-                                selectedValue={this.state[fieldName]}
-                                onValueChange={(country) => this._onValueChange(formState, fieldName, country)}
+                                selectedValue={this.state.templateData[fieldName]}
+                                onValueChange={(country) => this._updateFormData(formState, fieldName, country)}
                             >
                                 {countries.map((country, index) => {
                                     return <Item label={country} value={country} key={index} />
@@ -123,7 +140,7 @@ export default class DetailScreen extends React.Component {
                                     style={{ textAlignVertical: "top" }}
                                     numberOfLines={4}
                                     placeholder={field.label}
-                                    onChangeText={(text) => this._onValueChange(formState, fieldName, text)}
+                                    onChangeText={(text) => this._updateFormData(formState, fieldName, text)}
                                 />
                             </Item>
                         );
@@ -132,7 +149,7 @@ export default class DetailScreen extends React.Component {
                             <Item
                                 key={index}>
                                 <Input placeholder={field.label}
-                                    onChangeText={(text) => this._onValueChange(formState, fieldName, text)}
+                                    onChangeText={(text) => this._updateFormData(formState, fieldName, text)}
                                 />
                             </Item>
                         );
@@ -143,8 +160,8 @@ export default class DetailScreen extends React.Component {
                                 iosHeader="Select one"
                                 mode="dropdown"
                                 key={index}
-                                selectedValue={this.state[fieldName]}
-                                onValueChange={(value) => this._onValueChange(formState, fieldName, value)}
+                                selectedValue={this.state.templateData[fieldName]}
+                                onValueChange={(value) => this._updateFormData(formState, fieldName, value)}
                             >
                                 {options.map((option, index) => {
                                     return <Item label={option.label} value={option.value} key={index} />
@@ -171,7 +188,7 @@ export default class DetailScreen extends React.Component {
                             <Icon name="arrow-back" />
                         </Button>
                     </Left>
-                    <Body style={{flex: 3}}>
+                    <Body style={{ flex: 3 }}>
                         <Title>{projectData.name}</Title>
                     </Body>
                     <Right />
