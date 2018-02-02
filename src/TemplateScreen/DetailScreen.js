@@ -96,10 +96,15 @@ export default class DetailScreen extends React.Component {
 
     _onSubmit = () => {
         let jsonifiedData = this._jsonifyFlatData(this.state.templateData);
-        console.log("unflattened: ", jsonifiedData);
-        console.log("flattened: ", this.state.templateData);
-        // let signedData = signWithApp(JSON.stringify(flattenedState));
-        // console.log(signedData);
+        console.log(jsonifiedData);
+        signWithApp(JSON.stringify(jsonifiedData))
+          .then( signedData => {
+            console.log('signedData: %s', JSON.stringify(signedData));
+          })
+          .catch (error => {
+            console.log('failed on signWithApp call');
+            console.log(JSON.stringify(error));
+          });
     }
 
     _updateFormData = (formState, fieldName, value) => {
