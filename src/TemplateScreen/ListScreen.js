@@ -26,21 +26,17 @@ export default class ListScreen extends React.Component {
     }
 
     _searchButtonPressed = (templateName) => {
-        this.ixo.project.getProjectTemplate(templateName)
-            .then((response) => {
-                console.log(response.result);
-                this.setState(
-                    {
-                        flatData: flatData,
-                        isLoading: false
-                    }
-                );
-            })
-            .catch(error => console.log(error));
-
-    }
-
-    componentDidMount() {
+        // this.ixo.project.getProjectTemplate(templateName)
+        //     .then((response) => {
+        //         console.log(response.result);
+        //         this.setState(
+        //             {
+        //                 flatData: flatData,
+        //                 isLoading: false
+        //             }
+        //         );
+        //     })
+        //     .catch(error => console.log(error));
 
     }
 

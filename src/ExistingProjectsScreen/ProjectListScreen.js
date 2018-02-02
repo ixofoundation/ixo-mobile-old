@@ -16,6 +16,8 @@ export default class HomeScreen extends React.Component {
         super(props);
         this.state = {
             flatData: [],
+            filteredData: [],
+            searchText: "",
             isLoading: true
         };
         let hostName = 'https://ixo-node.herokuapp.com';
@@ -39,8 +41,21 @@ export default class HomeScreen extends React.Component {
             .catch(error => console.log(error));
     }
 
-    _searchButtonPressed() {
-        
+    _onSearchFilter = (text) => {
+        console.log("_onSearchFilter called");
+        let prevData = this.state.flatData;
+        let searchText = text.toLowerCase().trim();
+
+        let filteredData = prevData.filter((value, index) => {
+            return (
+                (prevData[index]["country"].toLowerCase().includes(searchText)) ||
+                (prevData[index]['name'].toLowerCase().includes(searchText)) ||
+                (prevData[index]["owner.name"].toLowerCase().includes(searchText)));
+        });
+
+        console.log("filteredData", filteredData);
+
+        this.setState({ filteredData, searchText: text });
     }
 
     _flattenData = (data, accum, flatData) => {
@@ -62,15 +77,16 @@ export default class HomeScreen extends React.Component {
     }
 
     _renderRow = (item, _, index) => {
+        let data = this.state.searchText.length > 0 ? this.state.filteredData : this.state.flatData;
         return (
             <ListItem
                 item={item}
                 index={index}
-                onPress={() => this.props.navigation.navigate("ProjectDetailScreen", this.state.flatData[index])}>
+                onPress={() => this.props.navigation.navigate("ProjectDetailScreen", data[index])}>
                 <Thumbnail square size={80} source={{ uri: 'http://www.theanimalfiles.com/images/sand_cat_1.jpg' }} />
                 <Body>
-                    <Text>{this.state.flatData[index]['name']}</Text>
-                    <Text note>{this.state.flatData[index]['country']} | {this.state.flatData[index]['owner.name']}</Text>
+                    <Text>{data[index]['name']}</Text>
+                    <Text note>{data[index]['country']} | {data[index]['owner.name']}</Text>
                 </Body>
             </ListItem>
         );
@@ -80,7 +96,8 @@ export default class HomeScreen extends React.Component {
         if (this.state.isLoading) {
             return <Content contentContainerStyle={{ flex: 1, justifyContent: "center" }}><Spinner color="blue" /></Content>
         } else {
-            return <List dataArray={this.state.flatData} renderRow={this._renderRow}></List>
+            let data = this.state.searchText.length > 0 ? this.state.filteredData : this.state.flatData;
+            return <List dataArray={data} renderRow={this._renderRow}></List>
         }
     }
 
@@ -100,13 +117,10 @@ export default class HomeScreen extends React.Component {
                     <Item>
                         <Icon name="search" />
                         <Input placeholder="Search"
-                            onChangeText={(text) => console.log(text)} />
+                            onChangeText={(text) => this._onSearchFilter(text)}
+                            value={this.state.searchText} />
                         <Icon name="paper" />
                     </Item>
-                    <Button transparent
-                        onPress={() => this._searchButtonPressed()}>
-                        <Text>Search</Text>
-                    </Button>
                 </Header>
                 {this._generateContent()}
             </Container>
