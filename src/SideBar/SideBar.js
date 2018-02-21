@@ -1,10 +1,9 @@
 import React from "react";
-import { AppRegistry, Image, StatusBar } from "react-native";
 import { Container, Content, Text, List, ListItem } from "native-base";
 
 export default class SideBar extends React.Component {
 
-    _renderRow = (item, _, index) => {
+    _renderRow = item => {
         return (
             <ListItem
                 button

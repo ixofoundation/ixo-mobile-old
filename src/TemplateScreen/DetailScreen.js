@@ -1,7 +1,5 @@
 import React from "react";
-import { Image, Alert } from 'react-native';
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, View, Form, Item, Label, Input, Picker } from "native-base";
-import { StackNavigator } from 'react-navigation';
+import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, View, Item, Input, Picker } from "native-base";
 
 import CreateProjectData from '../Data/CreateProjectData.js';
 import signWithApp from '../../SignWithApp.js';
@@ -39,7 +37,7 @@ export default class DetailScreen extends React.Component {
     _setHiddenFields = () => {
         let fields = CreateProjectData.fields;
         let formState = this.state.templateData;
-        for (field of fields) {
+        for (let field of fields) {
             if (field.hidden == "true") {
                 let fieldName = field.name;
                 this._updateFormData(formState, fieldName, "default");
@@ -55,16 +53,14 @@ export default class DetailScreen extends React.Component {
     componentWillMount() {
         let newState = Object.assign(this.state.templateData);
         let fields = CreateProjectData.fields;
-        fields.map((field, index) => {
+        fields.map(field => {
             let fieldName = field.name;
             switch (field.type) {
                 case "country":
-                    let firstCountry = countries[0];
-                    newState[fieldName] = firstCountry;
+                    newState[fieldName] = countries[0];
                     break;
                 case "select":
-                    let firstValue = field.options[0].value;
-                    newState[fieldName] = firstValue;
+                    newState[fieldName] = field.options[0].value;
                     break;
                 default:
                     break;
@@ -159,7 +155,6 @@ export default class DetailScreen extends React.Component {
                             </Item>
                         );
                     case "select":
-                        let options = field.options;
                         return (
                             <Picker
                                 iosHeader="Select one"
@@ -168,7 +163,7 @@ export default class DetailScreen extends React.Component {
                                 selectedValue={this.state.templateData[fieldName]}
                                 onValueChange={(value) => this._updateFormData(formState, fieldName, value)}
                             >
-                                {options.map((option, index) => {
+                                {field.options.map((option, index) => {
                                     return <Item label={option.label} value={option.value} key={index} />
                                 })}
                             </Picker>

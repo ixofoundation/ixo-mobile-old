@@ -1,10 +1,8 @@
 import React from "react";
-import { StatusBar, AsyncStorage } from "react-native";
+import { AsyncStorage } from "react-native";
 import {
-    Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, Card, CardItem,
-    List, ListItem, Thumbnail, View, Item, Input
+    Container, Header, Icon, Button, Content, Text, List, ListItem, View, Item, Input
 } from "native-base";
-import ExistingProjectsData from '../Data/ExistingProjectsData.js';
 import { Ixo } from 'ixo-module';
 
 

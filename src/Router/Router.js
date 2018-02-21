@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import SideBar from "../SideBar/SideBar.js";
 import { DrawerNavigator } from "react-navigation";
 import ExistingProjectsScreen from "../ExistingProjectsScreen/index.js";

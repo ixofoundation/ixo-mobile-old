@@ -4,9 +4,8 @@ import {
 } from 'react-native';
 
 import {Ixo} from 'ixo-module';
-import { Promise } from 'es6-promise';
 
-requestCode = 0;
+let requestCode = 0;
 
 function getIxo(){
   //Hardcode in some text to sign
@@ -52,6 +51,6 @@ async function signWithApp(formAsString) {
   console.log("Sign response:" + JSON.stringify(response.data.signature));
   return ixo.project.createProject(did, signature, data, signedDate, signatureType);
   
-};
+}
 
 export default signWithApp;

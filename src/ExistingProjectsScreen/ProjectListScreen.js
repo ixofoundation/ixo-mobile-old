@@ -1,12 +1,24 @@
 import React from "react";
-import { StatusBar } from "react-native";
 import {
-    Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, Card, CardItem,
-    List, ListItem, Thumbnail, Spinner, Input, View, Item
+    Container, 
+    Header, 
+    Icon, 
+    Button, 
+    Body, 
+    Content, 
+    Text, 
+    List, 
+    ListItem, 
+    Thumbnail, 
+    Spinner, 
+    Input, 
+    View, 
+    Item
 } from "native-base";
 import { Ixo } from 'ixo-module';
+import ExistingProjectsData from '../Data/ExistingProjectsData.js';
 
-export default class HomeScreen extends React.Component {
+export default class ProjectListScreen extends React.Component {
 
     static navigationOptions = {
         header: null
@@ -20,25 +32,34 @@ export default class HomeScreen extends React.Component {
             searchText: "",
             isLoading: true
         };
-        let hostName = 'https://ixo-node.herokuapp.com';
-        this.ixo = new Ixo(hostName);
+        // let hostName = 'https://ixo-node.herokuapp.com';
+        // this.ixo = new Ixo(hostName);
     }
 
     componentDidMount() {
-        this.ixo.project.listProjects()
-            .then((response) => {
-                console.log(response.result);
-                let flatData = response.result.map((value, index) => {
-                    return this._flattenData(value, [], {});
-                })
-                this.setState(
-                    {
-                        flatData: flatData,
-                        isLoading: false
-                    }
-                );
-            })
-            .catch(error => console.log(error));
+        // this.ixo.project.listProjects()
+        //     .then((response) => {
+        //         console.log(response.result);
+        //         let flatData = response.result.map((value, index) => {
+        //             return this._flattenData(value, [], {});
+        //         })
+        //         this.setState(
+        //             {
+        //                 flatData: flatData,
+        //                 isLoading: false
+        //             }
+        //         );
+        //     })
+        //     .catch(error => console.log(error));
+        let flatData = ExistingProjectsData.map(value => {
+            return this._flattenData(value, [], {});
+        });
+        this.setState(
+            {
+                flatData: flatData,
+                isLoading: false
+            }
+        )
     }
 
     _onSearchFilter = (text) => {
