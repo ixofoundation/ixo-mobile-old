@@ -1,7 +1,12 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Container, Content, Text, List, ListItem } from "native-base";
 
 export default class SideBar extends React.Component {
+
+    static propTypes = {
+        navigation: PropTypes.object.isRequired,
+    }
 
     _renderRow = item => {
         return (

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { AsyncStorage } from "react-native";
 import {
     Container, Header, Icon, Button, Content, Text, List, ListItem, View, Item, Input
@@ -15,6 +16,10 @@ export default class ListScreen extends React.Component {
 
     static navigationOptions = {
         header: null
+    }
+
+    static propTypes = {
+        navigation: PropTypes.object.isRequired,
     }
 
     constructor(props) {

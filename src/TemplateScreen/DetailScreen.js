@@ -1,5 +1,21 @@
 import React from "react";
-import { Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, View, Item, Input, Picker } from "native-base";
+import PropTypes from 'prop-types';
+import { 
+    Container, 
+    Header, 
+    Title, 
+    Left, 
+    Icon, 
+    Right, 
+    Button, 
+    Body, 
+    Content, 
+    Text, 
+    View, 
+    Item, 
+    Input, 
+    Picker
+} from "native-base";
 
 import CreateProjectData from '../Data/CreateProjectData.js';
 import signWithApp from '../../SignWithApp.js';
@@ -10,6 +26,10 @@ export default class DetailScreen extends React.Component {
 
     static navigationOptions = {
         header: null
+    }
+    
+    static propTypes = {
+        navigation: PropTypes.object.isRequired,
     }
 
     state = {

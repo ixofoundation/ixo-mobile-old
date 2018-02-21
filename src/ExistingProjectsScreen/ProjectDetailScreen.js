@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 import { 
     Container, 
@@ -17,6 +18,10 @@ export default class ProjectDetailScreen extends React.Component {
 
     static navigationOptions = {
         header: null
+    }
+
+    static propTypes = {
+        navigation: PropTypes.object.isRequired,
     }
 
     _renderImage() {

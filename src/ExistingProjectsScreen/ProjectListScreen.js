@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import {
     Container, 
     Header, 
@@ -22,6 +23,10 @@ export default class ProjectListScreen extends React.Component {
 
     static navigationOptions = {
         header: null
+    }
+
+    static propTypes = {
+        navigation: PropTypes.object.isRequired,
     }
 
     constructor(props) {
