@@ -72,7 +72,18 @@ It's likely that you'll want to run this app at the same time you're debugging a
 
 ```
 react-native start --port=8082
-react-native run-android --no-packager
+react-native run-android --no-packager --port=8082
 ```
 
 When the app first starts, you're likely to get a red box exception. To resolve this exception, open the dev menu (`CMD+M` on Mac, `Menu` on Windows). Choose the `Dev Settings` option and change the `Debug server host & port for device` to `localhost:8082`.
+
+There is a chance that you will run into a red box exception that says `unable to load script from assets index.android.bundle`. If this happens, run (from the top level project directory) the following 2 commands:
+```
+mkdir android/app/src/main/assets
+react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res
+```
+then, once more, run:
+```
+react-native run-android --no-packager --port=8082
+```
+More can be read at [this stackoverflow question](https://stackoverflow.com/questions/44446523/unable-to-load-script-from-assets-index-android-bundle-on-windows)
