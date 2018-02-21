@@ -86,4 +86,4 @@ then, once more, run:
 ```
 react-native run-android --no-packager --port=8082
 ```
-More can be read at [this stackoverflow question](https://stackoverflow.com/questions/44446523/unable-to-load-script-from-assets-index-android-bundle-on-windows)
+More can be read at [this stackoverflow question](https://stackoverflow.com/questions/44446523/unable-to-load-script-from-assets-index-android-bundle-on-windows).
