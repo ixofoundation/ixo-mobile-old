@@ -106,7 +106,10 @@ export default class TemplateScreen extends React.Component {
         signWithApp(JSON.stringify(payload))
           .then( signedData => {
             console.log('signedData: %s', JSON.stringify(signedData));
-            this._createAgent(signedData);
+            return this._createAgent(signedData);
+          })
+          .then((response) => {
+              console.log(response);
           })
           .catch (error => {
             console.log('failed on signWithApp call');
@@ -125,10 +128,10 @@ export default class TemplateScreen extends React.Component {
         this.ixo.credentialProvider.setSignature(signedData.signature);
       
         //update the did to the signed in user
-        this.ixo.credentialProvider.setDid(did);
+        this.ixo.credentialProvider.setDid(signedData.signature.creator);
       
         console.log("Sign response:" + JSON.stringify(signedData));
-        return ixo.agent.createAgent(signedData.payload, signedData.payload.template.name);
+        return this.ixo.agent.createAgent(signedData.payload.data, signedData.payload.template.name);
       
     }
 

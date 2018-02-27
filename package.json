@@ -17,7 +17,7 @@
     "domain-browser": "^1.2.0",
     "events": "^1.1.1",
     "https-browserify": "0.0.1",
-    "ixo-module": "^1.4.25",
+    "ixo-module": "^1.4.26",
     "native-base": "^2.3.7",
     "path-browserify": "0.0.0",
     "process": "^0.11.10",

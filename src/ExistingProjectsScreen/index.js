@@ -17,15 +17,18 @@ class IxoCredentialProvider {
     }
     sign(dataToSign, templateName){
         // Thisis a hack.  We need to call setSignature just prior to calling the ixo module to get this to work
-        return this.signature;
+        return new Promise((resolve, reject) => {
+            resolve(this.signature);
+        })
     }
+    
     setSignature(signature){
         this.signature = signature;
     }
 
 }
 
-let hostName = 'http://localhost:5000'; //'https://ixo-node.herokuapp.com';
+let hostName = 'http://192.168.0.104:5000'; //'https://ixo-node.herokuapp.com';
 let ixo = new Ixo(hostName, new IxoCredentialProvider());
 
 export default (DrawNav = StackNavigator({
