@@ -102,37 +102,10 @@ export default class TemplateScreen extends React.Component {
 
     _onSubmit = () => {
         let jsonifiedData = this._jsonifyFlatData(this.state.templateData);
-        let payload = {data: jsonifiedData, template: {name: this.state.projectData["agentTemplate.name"]} };
-        signWithApp(JSON.stringify(payload))
-          .then( signedData => {
-            console.log('signedData: %s', JSON.stringify(signedData));
-            return this._createAgent(signedData);
-          })
-          .then((response) => {
-              console.log(response);
-          })
-          .catch (error => {
-            console.log('failed on signWithApp call');
-            console.log(JSON.stringify(error));
-          });
-    }
+        let agentData = jsonifiedData;
 
-    _createAgent(signedData){
-        // TODO: The should be changed to be response.data.signature.creator and then the public key should also be sent
-        var did = signedData.signature.publicKey;
-        var signature = signedData.signature.signature; 
-        var data = signedData.content;
-        var signedDate = signedData.signature.created;
-        var signatureType = signedData.signature.type;
+        return this.ixo.agent.createAgent(agentData, this.state.projectData["agentTemplate.name"]);
 
-        this.ixo.credentialProvider.setSignature(signedData.signature);
-      
-        //update the did to the signed in user
-        this.ixo.credentialProvider.setDid(signedData.signature.creator);
-      
-        console.log("Sign response:" + JSON.stringify(signedData));
-        return this.ixo.agent.createAgent(signedData.payload.data, signedData.payload.template.name);
-      
     }
 
     _updateFormData = (formState, fieldName, value) => {
