@@ -20,7 +20,7 @@ export default class ProjectDetailScreen extends React.Component {
     _onRegister(){
         const { state } = this.props.navigation;
         let projectData = state.params;
-        this.props.navigation.navigate("TemplateScreen", {type: "register", projectData: projectData });
+        this.props.navigation.navigate("TemplateScreen", {type: "registerAgent", projectData: projectData });
     }
 
     _onSubmitClaim(){

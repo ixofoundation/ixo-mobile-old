@@ -41,6 +41,18 @@ export default class TemplateScreen extends React.Component {
             );
     }
     
+    _loadClaimTemplate(name){
+        return this.ixo.claim.getClaimTemplate(name)
+            .then((response) => {
+                this.setState({
+                    fields: response.result.form.fields,
+                    loaded: true
+                });
+             })
+            .catch(error => 
+                console.log(error)
+            );
+    }
 
     _getLocation() {
         navigator.geolocation.getCurrentPosition(
@@ -75,9 +87,11 @@ export default class TemplateScreen extends React.Component {
 
     componentWillMount() {
 
-        if(this.state.type == 'register'){
+        if(this.state.type == 'registerAgent'){
             this._loadAgentTemplate(this.state.projectData["agentTemplate.name"]);     
-        } 
+        }else{
+            this._loadClaimTemplate(this.state.projectData["claimTemplate.name"]);     
+        }
    }
 
     _jsonifyFlatData(state) {
@@ -102,12 +116,40 @@ export default class TemplateScreen extends React.Component {
 
     _onSubmit = () => {
         let jsonifiedData = this._jsonifyFlatData(this.state.templateData);
-        let agentData = jsonifiedData;
+        if(this.state.type == 'registerAgent'){
+            return this._createAgent(jsonifiedData)
+        }else{
+            return this._createClaim(jsonifiedData);
+        }
+    }
 
-        return this.ixo.agent.createAgent(agentData, this.state.projectData["agentTemplate.name"]);
+    _createAgent = (agentData) => {
+        return this.ixo.agent.createAgent(agentData, this.state.projectData["agentTemplate.name"])
+            .then((response) => {
+                if(response.error){
+                    Alert.alert("Error", response.error.message);
+                }else{
+                    Alert.alert("Success", "Agent successfully created");
+                }
+                this.props.navigation.navigate("ProjectDetailScreen", this.state.projectData);
+            }
+        );
 
     }
 
+    _createClaim = (claimData) => {
+        return this.ixo.claim.createClaim(claimData, this.state.projectData["claimTemplate.name"])
+            .then((response) => {
+                if(response.error){
+                    Alert.alert("Error", response.error.message);
+                }else{
+                    Alert.alert("Success", "Claim successfully captured");
+                }
+                this.props.navigation.navigate("ProjectDetailScreen", this.state.projectData);
+            }
+        );
+
+    }
     _updateFormData = (formState, fieldName, value) => {
         formState[fieldName] = value;
         this.setState({ templateData: formState });

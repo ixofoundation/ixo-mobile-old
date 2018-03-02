@@ -6,14 +6,15 @@ import ExistingProjectsScreen from "../ExistingProjectsScreen/index.js";
 
 const Router = DrawerNavigator(
     {
-        ListProjectsScreen: { screen: ExistingProjectsScreen },
+        ListProjectsScreen: { 
+            screen: ExistingProjectsScreen
+        }
 //        MyProjectsScreen: { screen: props => <ExistingProjectsScreen  {...props} /> },
 //        TemplateScreen: { screen: TemplateScreen }
     },
     {
         contentComponent: props => <SideBar {...props} />,
-        initialRouteName: 'ListProjectsScreen'
-    
+        initialRouteName: 'ListProjectsScreen',
     }
 );
 export default Router;

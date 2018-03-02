@@ -83,4 +83,11 @@ export default (DrawNav = StackNavigator({
     ProjectListScreen: { screen: (props) => <ProjectListScreen {...props } ixo={ixo}/> },
     ProjectDetailScreen: { screen: (props) => <ProjectDetailScreen {...props } ixo={ixo} /> },
     TemplateScreen: { screen: (props) => <TemplateScreen {...props } ixo={ixo} />}
-}));
+},
+{
+  headerMode: 'none',
+  navigationOptions: {
+    headerVisible: false,
+  }
+ }
+));
