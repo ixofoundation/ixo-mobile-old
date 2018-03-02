@@ -8,13 +8,6 @@ import { Promise } from 'es6-promise';
 
 requestCode = 0;
 
-function getIxo(){
-  //Hardcode in some text to sign
-  const ixo = new Ixo("https://ixo-node.herokuapp.com");
-  console.log('done ixo');
-  return ixo;
-}
-
 
 async function signWithApp(formAsString) {
   if (Platform.OS === 'ios') {
@@ -40,17 +33,8 @@ async function signWithApp(formAsString) {
     throw new Error('Invalid result from sign activity.');
   }
 
+  return response.data;
 
-  const ixo = getIxo();
-  // TODO: The should be changed to be response.data.signature.creator and then the public key should also be sent
-  var did = response.data.signature.publicKey;
-  var signature = response.data.signature.signature; 
-  var data = response.data.content;
-  var signedDate = response.data.signature.created;
-  var signatureType = response.data.signature.type;
-
-  console.log("Sign response:" + JSON.stringify(response.data.signature));
-  return ixo.project.createProject(did, signature, data, signedDate, signatureType);
   
 };
 

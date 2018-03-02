@@ -17,23 +17,42 @@ export default class ProjectDetailScreen extends React.Component {
         );
     }
 
+    _onRegister(){
+        const { state } = this.props.navigation;
+        let projectData = state.params;
+        this.props.navigation.navigate("TemplateScreen", {type: "registerAgent", projectData: projectData });
+    }
+
+    _onSubmitClaim(){
+        const { state } = this.props.navigation;
+        let projectData = state.params;
+        this.props.navigation.navigate("TemplateScreen", {type: "submitClaim", projectData: projectData });
+    }
+
     _renderText = () => {
         const { state } = this.props.navigation;
         let projectData = state.params;
-        let textViews = Object.keys(projectData).map((key, index) => {
-            let legibleKey = (key.charAt(0).toUpperCase() + key.slice(1)).replace(".", " ");
-            return (
-                <View padder style={{ flex: 1, flexDirection: "row" }}
-                    key={index}>
-                    <Text style={{ fontWeight: "bold", flex: 1 }}>{legibleKey}</Text>
-                    <Text style={{ flex: 3 }}>{projectData[key]}</Text>
-                </View>
-            );
-        });
-
         return (
-            <View>{textViews}</View>
-        );
+            <View>
+                <View padder style={{ flex: 1, flexDirection: "row" }}>
+                    <Text style={{ fontWeight: "bold", flex: 1 }}>Created: </Text>
+                    <Text style={{ flex: 3 }}>{projectData['created']}</Text>
+                </View>
+                <View padder style={{ flex: 1, flexDirection: "row" }}>
+                    <Text style={{ fontWeight: "bold", flex: 1 }}>About: </Text>
+                </View>
+                <View padder style={{ flex: 2, flexDirection: "row" }}>
+                    <Text style={{ flex: 3, height: 40}}>{projectData['about']}</Text>
+                </View>
+                <View padder style={{ flex: 2, flexDirection: "row" }}>
+                    <Text style={{ flex: 1}}></Text>
+                    <Button block onPress={() => this._onRegister()} style={{ flex: 5, justifyContent: "center" }}><Text>Register</Text></Button>
+                    <Text style={{ flex: 1 }}></Text>
+                    <Button block onPress={() => this._onSubmitClaim()} style={{ flex: 5, justifyContent: "center" }}><Text>Submit Claim</Text></Button>
+                    <Text style={{ flex: 1 }}></Text>
+                </View>
+            </View>
+        )
     }
 
     render() {

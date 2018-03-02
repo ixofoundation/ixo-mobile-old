@@ -4,7 +4,6 @@ import {
     Container, Header, Title, Left, Icon, Right, Button, Body, Content, Text, Card, CardItem,
     List, ListItem, Thumbnail, Spinner, Input, View, Item
 } from "native-base";
-import { Ixo } from 'ixo-module';
 
 export default class HomeScreen extends React.Component {
 
@@ -20,14 +19,12 @@ export default class HomeScreen extends React.Component {
             searchText: "",
             isLoading: true
         };
-        let hostName = 'https://ixo-node.herokuapp.com';
-        this.ixo = new Ixo(hostName);
+        this.ixo = props.ixo;
     }
 
     componentDidMount() {
         this.ixo.project.listProjects()
             .then((response) => {
-                console.log(response.result);
                 let flatData = response.result.map((value, index) => {
                     return this._flattenData(value, [], {});
                 })
