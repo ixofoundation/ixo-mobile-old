@@ -76,7 +76,7 @@ class IxoCredentialProvider {
 
 }
 
-let hostName = 'http://192.168.0.104:5000'; //'https://ixo-node.herokuapp.com';
+let hostName = 'https://ixo-node.herokuapp.com'; //'http://192.168.0.104:5000';
 let ixo = new Ixo(hostName, new IxoCredentialProvider());
 
 export default (DrawNav = StackNavigator({
